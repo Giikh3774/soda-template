@@ -33,6 +33,11 @@
             box-sizing: border-box;
         }
 
+        html {
+            height: 100%;
+            overflow: hidden;
+        }
+
         body {
             background: radial-gradient(circle at center, var(--bg-inner) 0%, var(--bg-mid) 50%, var(--bg-outer) 100%);
             color: var(--text-color);
@@ -160,7 +165,7 @@
             align-items: center;
             justify-content: center;
             padding: 0 4%;
-            padding-top: 5rem;
+            padding-top: 7rem; /* Clear the fixed header (~113px tall) */
         }
 
         .hero-content {
@@ -178,7 +183,8 @@
         .main-title,
         .side-title {
             font-family: var(--font-heading);
-            font-size: clamp(5rem, 10vw, 12rem);
+            /* Width-based size, but capped by viewport height so the column never overflows */
+            font-size: clamp(4rem, min(10vw, calc(62.5vh - 294px)), 12rem);
             line-height: 0.8;
             font-weight: 400;
             text-transform: none;
@@ -222,7 +228,7 @@
             display: flex;
             flex-direction: column;
             height: 100%;
-            padding: 6rem 0;
+            padding: 3rem 0 2rem;
             gap: 2rem;
             z-index: 100;
         }
@@ -391,7 +397,7 @@
             align-items: flex-end;
             text-align: right;
             height: 100%;
-            padding: 6rem 0;
+            padding: 4rem 0 2rem;
             z-index: 100;
             width: 450px;
             pointer-events: none;
@@ -819,6 +825,11 @@
             b.dataset.rx = 0; b.dataset.ry = 0; b.dataset.angle = Math.random() * 360;
             b.dataset.baseX = 0; b.dataset.baseY = 0;
             b.dataset.targetRx = 0; b.dataset.targetRy = 0;
+        });
+
+        // Landing page is a fixed, no-scroll hero: undo any programmatic/focus scroll
+        window.addEventListener('scroll', () => {
+            if (window.scrollX || window.scrollY) window.scrollTo(0, 0);
         });
 
         let mouse = { x: 0, y: 0, px: 0, py: 0 };
